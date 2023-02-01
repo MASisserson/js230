@@ -2,15 +2,32 @@
 
 import debounce from './debounce.js';
 
-const Autocomplete = {
-  wrapInput: function() {
+class Autocomplete {
+  constructor(input, url) {
+    this.input = input;
+    this.url = url;
+
+    this.listUI = null;
+    this.overlay = null;
+    this.visible = false;
+    this.matches = [];
+    this.selectedIndex = null;
+    this.bestMatchIndex = null;
+
+    this.wrapInput();
+    this.createUI();
+    this.valueChanged = debounce(this.valueChanged.bind(this), 300);
+    this.bindEvents();
+  }
+
+  wrapInput() {
     let wrapper = document.createElement('div');
     wrapper.classList.add('autocomplete-wrapper');
     this.input.parentNode.appendChild(wrapper);
     wrapper.appendChild(this.input);
-  },
+  }
 
-  createUI: function() {
+  createUI() {
     let listUI = document.createElement('ul');
     listUI.classList.add('autocomplete-ui');
     this.input.parentNode.appendChild(listUI);
@@ -22,13 +39,13 @@ const Autocomplete = {
 
     this.input.parentNode.appendChild(overlay);
     this.overlay = overlay;
-  },
+  }
 
-  bindEvents: function() {
+  bindEvents() {
     this.input.addEventListener('input', this.valueChanged);
     this.input.addEventListener('keydown', this.handleKeydown.bind(this));
     this.listUI.addEventListener('click', this.handleClick.bind(this));
-  },
+  }
 
   // handleClick: function(event) {
   //   if (event.button === 0 && event.target.tagName === 'LI') {
@@ -41,15 +58,15 @@ const Autocomplete = {
   //   }
   // },
 
-  handleClick: function(event) {
+  handleClick(event) {
     if (event.button === 0 && event.target.tagName === 'LI') {
       let element = event.target;
       this.input.value = element.textContent;
       this.reset();
     }
-  },
+  }
 
-  handleKeydown: function(event) {
+  handleKeydown(event) {
     switch(event.key) {
       case 'ArrowDown':
         event.preventDefault();
@@ -81,17 +98,17 @@ const Autocomplete = {
         this.reset();
         break;
     }
-  },
+  }
 
-  completeField: function(event) {
+  completeField(event) {
     event.preventDefault();
     if (this.bestMatchIndex === null && this.matches.length !== 0) {
       this.input.value = this.matches[this.selectedIndex].name;
     }
     this.reset();
-  },
+  }
 
-  valueChanged: function() {
+  valueChanged() {
     let value = this.input.value;
 
     if (value.length > 0) {
@@ -105,9 +122,9 @@ const Autocomplete = {
     } else {
       this.reset();
     }
-  },
+  }
 
-  draw: function() {
+  draw() {
     while (this.listUI.lastChild) {
       this.listUI.removeChild(this.listUI.lastChild);
     }
@@ -138,14 +155,14 @@ const Autocomplete = {
       li.textContent = match.name;
       this.listUI.appendChild(li);
     });
-  },
+  }
 
-  generateOverlayContent: function(value, match) {
+  generateOverlayContent(value, match) {
     let end = match.name.substr(value.length);
     return value + end;
-  },
+  }
 
-  fetchMatches: function(query, callback) {
+  fetchMatches(query, callback) {
     let request = new XMLHttpRequest();
 
     request.addEventListener('load', () => {
@@ -155,34 +172,19 @@ const Autocomplete = {
     request.open('GET', `${this.url}${encodeURIComponent(query)}`);
     request.responseType = 'json';
     request.send();
-  },
+  }
 
-  reset: function() {
+  reset() {
     this.visible = false;
     this.matches = [];
     this.bestMatchIndex = null;
     this.selectedIndex = null;
 
     this.draw();
-  },
-
-  init: function() {
-    this.input = document.querySelector('input');
-    this.url = '/countries?matching=';
-
-    this.listUI = null;
-    this.overlay = null;
-
-    this.wrapInput();
-    this.createUI();
-
-    this.valueChanged = debounce(this.valueChanged.bind(this), 300);
-
-    this.bindEvents();
-    this.reset();
   }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  Autocomplete.init();
+  let input = document.querySelector('input');
+  let autocomplete = new Autocomplete(input, '/countries?matching=');
 });

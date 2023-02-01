@@ -1,0 +1,22 @@
+{
+  "name": "js230",
+  "version": "1.0.0",
+  "description": "Launch School js230 course directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MASisserson/js230.git"
+  },
+  "keywords": [
+    "js230"
+  ],
+  "author": "Matthew Sisserson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MASisserson/js230/issues"
+  },
+  "homepage": "https://github.com/MASisserson/js230#readme"
+}
