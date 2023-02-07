@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/MASisserson/js230/issues"
   },
-  "homepage": "https://github.com/MASisserson/js230#readme"
+  "homepage": "https://github.com/MASisserson/js230#readme",
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "jquery": "^3.6.3"
+  }
 }

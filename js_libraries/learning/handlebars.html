@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-3.6.3.js"></script>
+  <script src="./handlebars.js"></script>
+
+  <title>Document</title>
+</head>
+<body>
+  <script id="productTemplate" type="text/x-handlebars">
+    <li>
+      <h3>{{name}}</h3>
+      <dl>
+        <dt>Quantity:</dt>
+        <dd>{{quantity}}</dd>
+        <dt>Price:</dt>
+        <dd>
+          ${{price}}
+          {{#if on_sale}}
+          <strong>SALE!</strong>
+          {{/if}}
+        </dd>
+      </dl>
+    </li>
+  </script>
+
+  <script id="productsList" type="text/x-handlebars">
+    {{#each items}}
+    {{> productTemplate}}
+    {{/each}}
+  </script>
+
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let products = [
+        {
+          name: 'Banana',
+          quantity: 14,
+          price: 0.79,
+          on_sale: true
+        },
+        {
+          name: 'Apple',
+          quantity: 5,
+          price: 0.94,
+          on_sale: false,
+        },
+        {
+          name: 'Kiwi',
+          quantity: 2,
+          price: 0.34,
+          on_sale: true,
+        }
+      ];
+
+      let pizza = {
+        name: "Pepperoni Pizza",
+        quantity: 4,
+        price: 6.43
+      };
+
+      // Compile both templates
+      let productsList = Handlebars.compile($('#productsList').html());
+      let productTemplate = Handlebars.compile($('#productTemplate').html()); 
+      let $list = $('<ul></ul>');
+
+      // register partial
+      Handlebars.registerPartial('productTemplate', $('#productTemplate').html());
+
+      // write list to page
+      $(document.body).append($list.html(productsList({ items: products })));
+
+      // add new product (pizza)
+      $(document.body).append($list.append(productTemplate(pizza)));
+    });
+  </script> -->
+  <ul></ul>
+</body>
+</html>
